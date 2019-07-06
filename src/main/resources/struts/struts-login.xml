@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="login" extends="default" namespace="/login">
+		<interceptors>
+			<!-- 定义当前package的拦截器栈 -->
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="modelDrivenStack" />
+				<interceptor-ref name="fileUpload" />
+			</interceptor-stack>
+		</interceptors>
+
+		<!-- 重写从父package继承的 默认拦截default-interceptor-ref，因为登陆页不需要身份验证 -->
+		<!-- 当前package下所有action的默认拦截器-->
+		<default-interceptor-ref name="loginStack" />
+
+		<action name="login" class="com.lwr.action.LoginAction" method="doLogin">
+			<!--如下，如果加上interceptor-ref，会覆盖默认的default-interceptor-ref，其他拦截器不再生效 -->
+			<!-- <interceptor-ref name="authenticationInterceptor" /> -->
+			<result name="input" type="redirect">/login.jsp</result>
+			<result name="success" type="redirect">/home/index</result>
+		</action>
+	</package>
+</struts>

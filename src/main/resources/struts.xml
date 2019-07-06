@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+
+<struts>
+	<!-- struts-default.xml位于struts2-core.jar包根目录， 用于原始的常量、bean、package和interceptors的配置 -->
+	<!-- 抽象package：<package name="struts-default" abstract="true" strict-method-invocation="true"> -->
+	<!-- 默认拦截器：<default-interceptor-ref name="defaultStack"/> -->
+	<include file="struts-default.xml" />
+
+	<!-- constant常量设置，对应类org.apache.struts2.StrutsConstants中的变量 -->
+	<!-- default.properties位于struts2-core.jar包，里面配置了全局的默认常量 -->
+	<!-- struts全局上传默认限制2M，需要修改 -->
+	<constant name="struts.multipart.maxSize" value="2097152000" />
+	<constant name="struts.action.extension" value="action,do,," />
+	<!-- action请求后缀 -->
+	<!-- <constant name="struts.action.extension" value="action" /> -->
+	<!-- Use Spring IoC as object factory for Struts Actions. -->
+	<!-- <constant name="struts.objectFactory" value="spring" /> -->
+
+
+	<!-- 以下是使用struts2-convention-plugin.jar包提供的,需要maven引入 -->
+	<!-- <constant name="struts.convention.action.mapAllMatches" value="true" 
+		/> <constant name="struts.convention.default.parent.package" value="default" 
+		/> -->
+	<!-- Directory where templates are located (default "/WEB-INF/content/"). -->
+	<!-- <constant name="struts.convention.result.path" value="/WEB-INF/jsp/" 
+		/> -->
+	<!-- TODO: DEVELOPMENT -->
+	<!--<constant name="struts.convention.classes.reload" value="true"/> -->
+
+	<!-- 继承struts-default，struts-default package是抽象定义表示无action，只是interceptor用来被继承使用而已 -->
+	<package name="default" extends="struts-default">
+		<interceptors>
+			<!--自定义拦截器 -->
+			<interceptor name="authenticationInterceptor"
+				class="com.lwr.interceptor.AuthenticationInterceptor" />
+
+			<interceptor-stack name="globalStack">
+				<interceptor-ref name="authenticationInterceptor" />
+				<!-- modelDrivenStack包括modelDriven和basicStack，
+				    modelDriven对于实现驱动接口的action,把 参数封装成model对象，
+				    basicStack拦截获取请求中的参数设置到全局变量（必须有get/set），
+				          所有这些拦截器和栈都在struts-default中定义，继承后可以直接使用 -->
+	            <!-- 使用struts-default.xml中的拦截器，配置顺序最好跟defaultStack中的一致，
+	                                         因为，比如fileUpload获取附件，就必须在basicStack拦截之前完成，否则action获取不到参数 -->
+				<interceptor-ref name="fileUpload" />
+				<interceptor-ref name="modelDrivenStack" />
+			</interceptor-stack>
+
+		</interceptors>
+
+		<!-- 当前package中所有action默认的拦截器栈 -->
+		<!-- action最终使用的拦截器栈一定要包含basicStack -->
+		<default-interceptor-ref name="globalStack" />
+
+		<!-- 全局result -->
+		<global-results>
+			<result name="login" type="redirect">
+				/login.jsp
+			</result>
+			<result name="error" type="redirect">
+				/404.html
+			</result>
+			<result name="other" type="redirectAction">
+				<param name="actionName">login</param>
+				<param name="namespace">/</param>
+			</result>
+		</global-results>
+
+        <!-- 全局异常配置 -->
+		<global-exception-mappings>
+			<exception-mapping exception="java.lang.Exception"
+				result="error" />
+		</global-exception-mappings>
+	</package>
+	
+	<!-- include不是把内容插入，而是另外解析文件 -->
+    <include file="struts/struts-login.xml"/>
+    <include file="struts/struts-register.xml"/>
+    <include file="struts/struts-home.xml"/>
+</struts>

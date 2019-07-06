@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1//EN"
+	"http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<package name="home" extends="default" namespace="/home">
+
+		<action name="index" class="com.lwr.action.HomeAction" method="goHome">
+			<result name="success">/WEB-INF/views/index.jsp</result>
+		</action>
+		<action name="logOut" class="com.lwr.action.HomeAction" method="logOut">
+		  <result name="input" type="redirect">/login.jsp</result>
+		</action>
+		<action name="upload" class="com.lwr.action.HomeAction" method="upload">
+		  <result >/error.jsp</result>
+		</action>
+		<action name="toUpload" class="com.lwr.action.HomeAction" method="toUpload">
+		  <result name="success">/WEB-INF/views/upload/upload.jsp</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,19 @@
+https://blog.csdn.net/flysun3344/article/details/76796600
+两种struts2和spring的整合方式
+第一种（推荐）、struts2-spring-plugin.jar包内的struts-plugin.xml有：
+<constant name="struts.objectFactory" value="spring" />
+以此，继而触发了struts2-core.jar包内的default.properties的配置：
+struts.objectFactory.spring.autoWire = name（按名称把spring的bean自动注入action类，提供set方法）
+。。。
+
+
+第二种、未测试
+1、把action类配置成spring的bean（action的bean必须设置多例scope="prototype"，否则全局变量冲突）：
+    <bean name="book" class="com.somnus.action.BookAction" scope="prototype">
+        <property name="bookService" ref="bookService"></property>
+    </bean>
+2、配置struts2的action（class实际是bean的id）：
+    <action name="add" class="book" method="addBook">
+        <result name="success">/index.jsp</result>
+        <result name="error">/error.jsp</result>
+    </action>
