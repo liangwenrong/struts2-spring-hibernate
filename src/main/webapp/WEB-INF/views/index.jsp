@@ -4,7 +4,7 @@
 <html>
 <body>
         <div style="margin:50px 50px;">
-			<h2>欢迎您！ <a href="logOut" style="text-decoration:none;">退出</a></h2>
+			<h2>欢迎您！ <a href="logOut" style="text-decoration:none;">退出</a>&nbsp;&nbsp;<a href="toUpload" style="text-decoration:none;">上传文件</a></h2>
             <table border="1">
                 <tr>
                     <td>登录名：</td>

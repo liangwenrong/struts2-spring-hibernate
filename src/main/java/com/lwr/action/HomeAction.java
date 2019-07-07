@@ -63,6 +63,7 @@ public class HomeAction extends BaseAction {
                 e.printStackTrace();
             }
         }
+        getRequest().setAttribute("msg", "上传成功");
         return SUCCESS;
     }
 
