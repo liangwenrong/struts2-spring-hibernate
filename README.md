@@ -11,3 +11,4 @@ struts整合spring和hibernate的模板
  - action类实现模型驱动ModelDriven，把参数封装到全局对象
  - 这是最简洁的框架模型，其他功能比如日志等需要自己添加
  - 下载解压后如果项目名称有-master结尾，去掉再导入
+
